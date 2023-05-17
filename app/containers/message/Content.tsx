@@ -12,13 +12,14 @@ import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { MessageTypesValues } from '../../definitions';
+import { HtmlContent } from './HtmlContent';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 
-		if (props.isInfo) {
+		if (props.isInfo && props.isInfo !== 'editor') {
 			// @ts-ignore
 			const infoMessage = getInfoMessage({ ...props });
 
@@ -41,6 +42,7 @@ const Content = React.memo(
 		const isPreview = props.tmid && !props.isThreadRoom;
 		let content = null;
 
+		if (props.isInfo === 'editor') return <HtmlContent content={props.msg} />;
 		if (props.isEncrypted) {
 			content = (
 				<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]} accessibilityLabel={I18n.t('Encrypted_message')}>
@@ -68,7 +70,6 @@ const Content = React.memo(
 				/>
 			);
 		}
-
 		if (props.isIgnored) {
 			content = <Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
 		}

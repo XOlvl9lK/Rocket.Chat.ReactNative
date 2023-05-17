@@ -51,6 +51,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			</>
 		);
 	}
+	// TODO: Здесь шаблон сообщения
 
 	return (
 		<>
@@ -69,7 +70,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props: IMessage) => {
-	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
+	if (props.isThreadReply || props.isThreadSequential || (props.isInfo && props.isInfo !== 'editor') || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
 			<View style={[styles.container, props.style]}>
